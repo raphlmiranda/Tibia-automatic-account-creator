@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from selenium import webdriver
 from tkinter import messagebox
+import os
 #pyinstaller --onefile GUI.py
 
 selenium = webdriver
@@ -72,6 +73,12 @@ class GUI():
         self.combo.grid(row=5, column=2)
         self.combo.bind('<<ComboboxSelected>>', self.changeCombobox)
     
+    def createLog(self):
+        self.user = os.getlogin()
+        self.path = 'c:\\users\\%s\\tibiaAcc.txt' %self.user
+        self.file = open(self.path, 'a')
+        self.file.write('Account Name: ' + self.ent1.get() + ' | Password: ' + self.ent2.get() + ' | World: ' + self.combo2.get() +'\n')
+    
     def getWorld(self, event):
         self.tt = self.combo2.get() 
 
@@ -86,7 +93,8 @@ class GUI():
     def callSelenium(self): # 
         qty = int(self.ent3.get())
         if self.checkAll() and isinstance(qty, int) and qty != 0:   
-            open = selenium.Chrome()       
+            open = selenium.Chrome()  
+            self.createLog()     
             for i in range(qty):
                 open.get(self.url)
                                 ###Selenium Variables###
@@ -119,7 +127,7 @@ class GUI():
                 for i in self.wordTypes:
                     if int(i) == self.wordType:
                         self.wordTypes[i].click()
-                self.wordXpath['world'].click()
+                #self.wordXpath['world'].click()
 
 start = GUI()
 start._show()
